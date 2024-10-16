@@ -7,6 +7,6 @@ const router = Router();
 
 router.get('/tasks', retrieveTasks);
 router.post('/tasks', addTask);
-router.delete('/tasks', removeTask)
+router.delete('/tasks/:taskId', removeTask)
 
 module.exports = router;
