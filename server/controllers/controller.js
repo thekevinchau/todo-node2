@@ -29,7 +29,7 @@ const addTask = async (req, res) => {
 }
 
 const removeTask = async (req, res) => {
-    const taskId = req.params.taskId;
+    const taskId = req.query.task_id;
     try {
         await deleteTask(taskId);
         console.log(`Deleted task with id ${taskId}`);
