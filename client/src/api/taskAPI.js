@@ -71,3 +71,42 @@ export const retrieveTasks = async() => {
     console.error('Error retrieving tasks!', err)
   }
 }
+
+export const logout = async() => {
+  try{
+    const response = await fetch('http://localhost:3000/api/logout', {
+      method: "GET",
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log(response);
+    return response.message;
+  }catch(err){
+    console.error('Error logging out!', err)
+  }
+}
+
+
+export const deleteTask = async(taskId) => {
+  try{
+    const response = await fetch('http://localhost:3000/api/tasks/delete', {
+      method: "DELETE",
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        task_id: taskId
+      })
+    });
+    console.log(response.message);
+    location.reload();
+
+  }catch(err){
+     console.error('Error deleting task!', err);
+  }
+}
