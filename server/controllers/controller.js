@@ -38,11 +38,11 @@ exports.addTask = async (req, res) => {
                 { _id: userID },
                 { $push: { tasks: newTask } }
             )
-            res.send('Task successfully added!');
+            res.status(201).json({message: 'successful'});
 
         } catch (err) {
             console.error(err);
-            res.send('Error occurred!')
+            res.json({message: 'failed'})
         }
     }
     else {
@@ -123,7 +123,7 @@ exports.deleteTask = async(req, res) => {
             const newTasks = user.tasks.filter((task) => task._id.toString() !== task_id);
             user.tasks = newTasks;
             user.save();
-            res.send(user.tasks);
+            res.json({message: 'Successfully deleted!'});
 
         }catch(err){
             console.error('Error deleting task!', err);

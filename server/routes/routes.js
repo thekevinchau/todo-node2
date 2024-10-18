@@ -15,8 +15,8 @@ apiRouter.get('/logout', (req, res) => {
         if (err) {
             console.error(err);
         }
+        res.json({message: 'logged out!'})
     })
-    res.json({message: 'logged out!'})
 })
 
 // ------------------ START OF POST ROUTES ----------------------------
