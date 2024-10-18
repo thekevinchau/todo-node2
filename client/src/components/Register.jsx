@@ -1,39 +1,49 @@
-import { useState } from "react"
+import { useState } from "react";
 import { createUser } from "../api/taskAPI";
+import { useNavigate } from "react-router-dom";
 
+export default function Register() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-export default function Register(){
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('');
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent the default form submission
+    await createUser(username, password);
+    navigate('/');
+  };
 
-    return <div className="border rounded-lg shadow-lg w-1/2 h-1/5 flex flex-col p-6">
-    <h1 className="text-2xl font-bold mb-4 text-center text-white">Register as a User!</h1>
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="border rounded-lg shadow-lg w-full max-w-sm p-8 bg-gray-800">
+        <h1 className="text-3xl font-bold mb-6 text-center text-white bg-inherit">Register as a User!</h1>
   
-    <form className="flex flex-col items-center w-full">
-      <input
-        type="text"
-        placeholder="Enter your username"
-        className="mb-4 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 text-white"
-        onChange={(e) => setUsername(e.target.value)}
-        value={username}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        className="mb-4 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 text-white"
-        onChange={(e) => {
-            setPassword(e.target.value);
-        }}
-        value={password}
-      />
-      <button
-        type="submit"
-        className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-200"
-        onClick={() => createUser(username, password)}
-      >
-        Register
-      </button>
-    </form>
-  </div>
-  
+        <form className="flex flex-col w-full bg-inherit" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Enter your username"
+            className="mb-4 w-full p-3 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 text-white transition duration-200"
+            onChange={(e) => setUsername(e.target.value)}
+            value={username}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            className="mb-6 w-full p-3 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 text-white transition duration-200"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            required
+          />
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-200"
+            disabled={username === "" || password === ""}
+          >
+            Register
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 }
