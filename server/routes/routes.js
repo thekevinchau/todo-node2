@@ -16,14 +16,26 @@ apiRouter.get('/logout', (req, res) => {
             console.error(err);
         }
     })
-    res.send('logged out!')
+    res.json({message: 'logged out!'})
 })
 
 // ------------------ START OF POST ROUTES ----------------------------
 
 //waits for post at login route, then passport will authenticate as middleware, then if successful, we move  onto the next middleware (3rd param)
 apiRouter.post('/login', passport.authenticate('local'), (req, res) => {
-    res.json(req.user)
+    if (req.user){
+        res.status(200).json({
+            status: "success",
+            _id: req.user._id,
+            username: req.user.username,
+        })
+    }
+    else{
+        res.status(401).json({
+            status: "failure",
+            message: "Invalid username or password!"
+        })
+    }
 }
 )
 apiRouter.post('/addTask', addTask);

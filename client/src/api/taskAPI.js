@@ -1,3 +1,5 @@
+
+
 export const createUser = async (username, password) => {
   try {
     const response = await fetch('http://localhost:3000/api/register', {
@@ -23,6 +25,10 @@ export const createUser = async (username, password) => {
   }
 };
 
+
+/*
+Simple post request to the backend that will generate a cookie on the request for the user.
+*/
 export const loginUser = async (username, password) => {
   try{
     const response = await fetch(`http://localhost:3000/api/login`,
@@ -35,7 +41,9 @@ export const loginUser = async (username, password) => {
         body: JSON.stringify({
           username: username,
           password: password
-        })
+        }),
+        credentials: 'include'
+        
       }
     )
 
@@ -44,5 +52,22 @@ export const loginUser = async (username, password) => {
 
   }catch(err){
     console.error('Error logging in user', err);
+  }
+}
+
+
+/*
+
+*/
+export const retrieveTasks = async() => {
+  try{
+    const response = await fetch ('http://localhost:3000/api/tasks', {
+      method: "GET",
+      credentials: 'include'
+    });
+    const data = await response.json();
+    return data;
+  }catch(err){
+    console.error('Error retrieving tasks!', err)
   }
 }

@@ -5,12 +5,6 @@ exports.createUser = async (req, res) => {
         username: req.body.username,
         password: req.body.password,
         tasks: [
-            {
-                task_name: 'Wash car',
-                completed: false,
-                created: new Date(),
-                completedAt: null
-            }
         ]
     })
     try {
@@ -70,7 +64,7 @@ exports.retrieveTasks = async(req, res) => {
         }
     }
     else{
-        res.send('You have been logged out!');
+        res.json({message: 'You have been logged out!'});
     }
 }
 /*
