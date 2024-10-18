@@ -1,53 +1,41 @@
-const {Router} = require('express');
-const { createUser } = require('../controllers/controller');
+const { Router } = require('express');
+const { createUser, addTask, retrieveTasks, updateTaskName, deleteTask } = require('../controllers/controller');
 const passport = require('passport');
 const User = require('../model/User');
 const apiRouter = Router();
 
 
 
-//4 endpoints: CRUD
-apiRouter.get('/', (req, res) => {
-    res.render('index');
+// ------------------- GET ROUTES ----------------------------
+
+apiRouter.get('/tasks', retrieveTasks);
+
+apiRouter.get('/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            console.error(err);
+        }
+    })
+    res.send('logged out!')
 })
 
-apiRouter.get('/tasks', (req, res) => {
-    console.log('Authenticated:', req.isAuthenticated());
-    console.log('User:', req.user);
-
-    if (req.isAuthenticated()) {
-        res.send(`You can see ${req.user.username} tasks`);
-    } else {
-        res.send('You can\'t be here');
-    }
-});
-
-
-apiRouter.get('/register', (req, res) => {
-    res.render('sign-up-form')
-})
+// ------------------ START OF POST ROUTES ----------------------------
 
 //waits for post at login route, then passport will authenticate as middleware, then if successful, we move  onto the next middleware (3rd param)
 apiRouter.post('/login', passport.authenticate('local'), (req, res) => {
-        res.json({
-            status: "success",
-            user: {
-                id: req.user._id,
-                username: req.user.username,
-                tasks: req.user.tasks
-            }
-        })
-    }
+    res.json(req.user)
+}
 )
+apiRouter.post('/addTask', addTask);
+apiRouter.post('/register', createUser);
 
-apiRouter.get('/protected-route', (req, res) => {
-    if (req.isAuthenticated()){
-        res.send('You can view this page Mr. ' + req.user.username);
-    }
-    else{
-        res.send('You are unable to view this page!')
-    }
-})
+// ---------------- START OF PUT ROUTES ----------------------------------
+apiRouter.put('/tasks/updateTaskName', updateTaskName);
 
-apiRouter.post('/register', createUser)
+
+// ----------------- START OF DELETE ROUTES -------------------------------
+apiRouter.delete('/tasks/delete', deleteTask)
+
+
+
 module.exports = apiRouter;
