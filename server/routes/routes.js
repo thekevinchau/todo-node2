@@ -11,6 +11,17 @@ apiRouter.get('/', (req, res) => {
     res.render('index');
 })
 
+apiRouter.get('/tasks', (req, res) => {
+    console.log('Authenticated:', req.isAuthenticated());
+    console.log('User:', req.user);
+
+    if (req.isAuthenticated()) {
+        res.send(`You can see ${req.user.username} tasks`);
+    } else {
+        res.send('You can\'t be here');
+    }
+});
+
 
 apiRouter.get('/register', (req, res) => {
     res.render('sign-up-form')
@@ -18,14 +29,16 @@ apiRouter.get('/register', (req, res) => {
 
 //waits for post at login route, then passport will authenticate as middleware, then if successful, we move  onto the next middleware (3rd param)
 apiRouter.post('/login', passport.authenticate('local'), (req, res) => {
-    res.json({
-        status: "success",
-        user: {
-            id: req.user._id,
-            username: req.user.username
-        }
-    })
-})
+        res.json({
+            status: "success",
+            user: {
+                id: req.user._id,
+                username: req.user.username,
+                tasks: req.user.tasks
+            }
+        })
+    }
+)
 
 apiRouter.get('/protected-route', (req, res) => {
     if (req.isAuthenticated()){
