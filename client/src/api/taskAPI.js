@@ -30,7 +30,7 @@ export const createUser = async (username, password) => {
 Simple post request to the backend that will generate a cookie on the request for the user.
 */
 export const loginUser = async (username, password) => {
-  try{
+  try {
     const response = await fetch(`http://localhost:3000/api/login`,
       {
         method: "POST",
@@ -43,14 +43,14 @@ export const loginUser = async (username, password) => {
           password: password
         }),
         credentials: 'include'
-        
+
       }
     )
 
     const data = await response.json();
     return data;
 
-  }catch(err){
+  } catch (err) {
     console.error('Error logging in user', err);
   }
 }
@@ -59,21 +59,21 @@ export const loginUser = async (username, password) => {
 /*
 
 */
-export const retrieveTasks = async() => {
-  try{
-    const response = await fetch ('http://localhost:3000/api/tasks', {
+export const retrieveTasks = async () => {
+  try {
+    const response = await fetch('http://localhost:3000/api/tasks', {
       method: "GET",
       credentials: 'include'
     });
     const data = await response.json();
     return data;
-  }catch(err){
+  } catch (err) {
     console.error('Error retrieving tasks!', err)
   }
 }
 
-export const logout = async() => {
-  try{
+export const logout = async () => {
+  try {
     const response = await fetch('http://localhost:3000/api/logout', {
       method: "GET",
       credentials: 'include',
@@ -82,16 +82,15 @@ export const logout = async() => {
         'Content-Type': 'application/json'
       }
     });
-    console.log(response);
     return response.message;
-  }catch(err){
+  } catch (err) {
     console.error('Error logging out!', err)
   }
 }
 
 
-export const deleteTask = async(taskId) => {
-  try{
+export const deleteTask = async (taskId) => {
+  try {
     const response = await fetch('http://localhost:3000/api/tasks/delete', {
       method: "DELETE",
       credentials: 'include',
@@ -106,7 +105,27 @@ export const deleteTask = async(taskId) => {
     console.log(response.message);
     location.reload();
 
-  }catch(err){
-     console.error('Error deleting task!', err);
+  } catch (err) {
+    console.error('Error deleting task!', err);
+  }
+}
+
+export const addTask = async (taskName) => {
+  try {
+    const response = await fetch('http://localhost:3000/api/addTask', {
+      method: "POST",
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        task_name: taskName
+      })
+    })
+    console.log(response.message);
+    location.reload();
+  } catch (err) {
+    console.error('Error adding a task!', err);
   }
 }
