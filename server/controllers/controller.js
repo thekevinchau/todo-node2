@@ -42,11 +42,11 @@ exports.addTask = async (req, res) => {
 
         } catch (err) {
             console.error(err);
-            res.json({message: 'failed'})
+            res.status(500).json({message: 'Server error when inserting task!'})
         }
     }
     else {
-        res.send('You have been logged out!');
+        res.status(403).send('You have been logged out!');
     }
 }
 
@@ -55,16 +55,19 @@ exports.retrieveTasks = async(req, res) => {
         const userID = req.user._id;
         try{
             const userTasks = await User.findById(userID);
-            res.json({
+            res.status(200).json({
                 userTasks: userTasks.tasks
             })
             
         }catch(err){
             console.error('Error retrieving user tasks', err);
+            res.status(500).json({
+                message: 'Server error when retrieving tasks!'
+            })
         }
     }
     else{
-        res.json({message: 'You have been logged out!'});
+        res.status(403).json({message: 'You have been logged out!'});
     }
 }
 /*
@@ -91,13 +94,14 @@ exports.updateTaskName = async(req, res) => {
             foundTask.task_name = new_task_name;
 
             await user.save();
-            res.send(foundTask);
+            res.status(201).json({message: 'successful!'});
         }catch(err){
             console.error('Error updating task!', err)
+            res.status(500).json({message: 'failure'})
         }
     }
     else{
-        res.send('You have been logged out!');
+        res.status(403).send('You have been logged out!');
     }
 }
 
@@ -123,10 +127,12 @@ exports.deleteTask = async(req, res) => {
             const newTasks = user.tasks.filter((task) => task._id.toString() !== task_id);
             user.tasks = newTasks;
             user.save();
-            res.json({message: 'Successfully deleted!'});
+            res.json({message: 'successful'});
 
         }catch(err){
             console.error('Error deleting task!', err);
+            res.status(500).json({message: 'failure'})
         }
     }
+    res.status(403).json({message: 'Authorization Error: You are not signed in!'})
 }
