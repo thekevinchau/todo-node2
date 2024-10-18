@@ -9,10 +9,10 @@ exports.createUser = async (req, res) => {
     })
     try {
         await newUser.save();
-        res.status(201).json({ message: 'Created user!' });
+        return res.status(201).json({ message: 'Created user!' });
     } catch (err) {
         console.error('Error creating user!', err);
-        res.status(500).json({message: 'Server error when creating a user!'});
+        return res.status(500).json({message: 'Server error when creating a user!'});
     }
 }
 /*
@@ -38,15 +38,15 @@ exports.addTask = async (req, res) => {
                 { _id: userID },
                 { $push: { tasks: newTask } }
             )
-            res.status(201).json({message: 'successful'});
+            return res.status(201).json({message: 'successful'});
 
         } catch (err) {
             console.error(err);
-            res.status(500).json({message: 'Server error when inserting task!'})
+            return res.status(500).json({message: 'Server error when inserting task!'})
         }
     }
     else {
-        res.status(403).send('You have been logged out!');
+        return res.status(403).send('You have been logged out!');
     }
 }
 
@@ -55,19 +55,19 @@ exports.retrieveTasks = async(req, res) => {
         const userID = req.user._id;
         try{
             const userTasks = await User.findById(userID);
-            res.status(200).json({
+            return res.status(200).json({
                 userTasks: userTasks.tasks
             })
             
         }catch(err){
             console.error('Error retrieving user tasks', err);
-            res.status(500).json({
+            return res.status(500).json({
                 message: 'Server error when retrieving tasks!'
             })
         }
     }
     else{
-        res.status(403).json({message: 'You have been logged out!'});
+        return res.status(403).json({message: 'You have been logged out!'});
     }
 }
 /*
@@ -94,14 +94,14 @@ exports.updateTaskName = async(req, res) => {
             foundTask.task_name = new_task_name;
 
             await user.save();
-            res.status(201).json({message: 'successful!'});
+            return res.status(201).json({message: 'successful!'});
         }catch(err){
             console.error('Error updating task!', err)
-            res.status(500).json({message: 'failure'})
+            return res.status(500).json({message: 'failure'})
         }
     }
     else{
-        res.status(403).send('You have been logged out!');
+        return res.status(403).send('You have been logged out!');
     }
 }
 
@@ -127,12 +127,43 @@ exports.deleteTask = async(req, res) => {
             const newTasks = user.tasks.filter((task) => task._id.toString() !== task_id);
             user.tasks = newTasks;
             user.save();
-            res.json({message: 'successful'});
+            return res.json({message: 'successful'});
 
         }catch(err){
             console.error('Error deleting task!', err);
-            res.status(500).json({message: 'failure'})
+            return res.status(500).json({message: 'failure'})
         }
     }
-    res.status(403).json({message: 'Authorization Error: You are not signed in!'})
+    return res.status(403).json({message: 'Authorization Error: You are not signed in!'})
+}
+
+/*
+1) Check authentication
+2) Grab the user id from the request and the task id from the body
+3) Find the particular task within the user
+    - Take its completion status and flip it
+4) Save it and return a message that says successful.
+*/
+
+
+exports.changeCompletion = async(req, res) => {
+    if (req.isAuthenticated()){
+        const userID = req.user._id;
+        const task_id = req.body.task_id;
+
+        try{
+            const user = await User.findById(userID);
+            const queriedTask = user.tasks.find((task) => task._id.toString() === task_id);
+            queriedTask.completed = !queriedTask.completed; //this will take the current status of the completion and flip it.
+            await user.save();
+            return res.status(200).json({message: 'successful'})
+        }
+        catch(err){
+            console.error('Error changing completion', err);
+            return res.status(400).json({message: 'failed'})
+        }
+    }
+    else{
+        return res.status(403).json({message: 'Authorization Failure!'})
+    }
 }

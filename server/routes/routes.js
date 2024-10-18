@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { createUser, addTask, retrieveTasks, updateTaskName, deleteTask } = require('../controllers/controller');
+const { createUser, addTask, retrieveTasks, updateTaskName, deleteTask, changeCompletion } = require('../controllers/controller');
 const passport = require('passport');
 const User = require('../model/User');
 const apiRouter = Router();
@@ -43,6 +43,7 @@ apiRouter.post('/register', createUser);
 
 // ---------------- START OF PUT ROUTES ----------------------------------
 apiRouter.put('/tasks/updateTaskName', updateTaskName);
+apiRouter.put('/tasks/changeCompletion', changeCompletion)
 
 
 // ----------------- START OF DELETE ROUTES -------------------------------
