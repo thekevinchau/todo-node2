@@ -42,6 +42,7 @@ export default function Register() {
           >
             Register
           </button>
+          <a className="text-white bg-inherit" href="/">Already a user?</a>
         </form>
       </div>
     </div>

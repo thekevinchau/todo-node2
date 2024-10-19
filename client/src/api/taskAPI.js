@@ -129,3 +129,49 @@ export const addTask = async (taskName) => {
     console.error('Error adding a task!', err);
   }
 }
+
+export const toggleCompletion = async(taskId) => {
+  try{
+    const response = await fetch('http://localhost:3000/api/tasks/changeCompletion',
+      {
+        method: "PUT",
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          task_id: taskId
+        })
+      }
+    )
+    console.log(response.message);
+    location.reload();
+  }catch(err){
+    console.error('Error toggling task completion!', err)
+  }
+}
+
+export const updateTaskName = async(taskId, taskName) => {
+  try{
+    const response = await fetch('http://localhost:3000/api/tasks/updateTaskName',
+      {
+        method: "PUT",
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          task_id: taskId,
+          new_task_name: taskName
+        })
+      }
+    );
+    console.log(response.message);
+
+    location.reload();
+  }catch(err){
+    console.error('Error updating task name', err)
+  }
+}

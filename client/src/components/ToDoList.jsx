@@ -14,6 +14,7 @@ export default function ToDoList() {
     await logout();
     navigate("/");
   };
+
   const fetchTasks = async () => {
     const res = await retrieveTasks();
     setTasks(res.userTasks);
@@ -24,13 +25,13 @@ export default function ToDoList() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-1/2 bg-inherit p-4 border rounded-md">
+    <div className="flex flex-col items-center justify-center min-h-1/4 bg-inherit p-4">
       {Object.keys(user).length === 0 ? (
         <p className="text-lg text-gray-300">You are not signed in!</p>
       ) : (
-        <div className="bg-inherit shadow-lg rounded-lg p-6 w-full max-w-md">
+        <div className="bg-inherit shadow-lg rounded-lg p-6 w-full max-w-md border">
           <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-semibold text-white">
+            <h1 className="text-2xl font-semibold text-white mr-2">
               Here are your tasks, {user.username}
             </h1>
             <button
@@ -40,20 +41,33 @@ export default function ToDoList() {
               Logout
             </button>
           </div>
-          <div className="space-y-4 overflow-scroll">
+          <div className="flex mb-4">
             <input
               type="text"
               placeholder="Add a new task!"
-              className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white"
+              className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white w-4/5 mr-1"
               onChange={(e) => setTaskName(e.target.value)}
             />
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition" onClick={() => addTask(taskName)} disabled={taskName === ""}>
+            <button 
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition" 
+              onClick={() => {
+                addTask(taskName);
+                setTaskName(''); // Clear input after adding
+              }} 
+              disabled={taskName === ""}
+            >
               Add
             </button>
-            {tasks.map((task, key) => (
-              <ToDo key={key} task={task} />
-            ))}
           </div>
+
+          {tasks.length === 0 ? <p className="text-white">You currently have no tasks</p> :
+                    <div className="max-h-64 overflow-y-auto border">
+                    {tasks.map((task, key) => (
+                      <ToDo key={key} task={task} />
+                    ))}
+                  </div>
+          }
+
         </div>
       )}
     </div>

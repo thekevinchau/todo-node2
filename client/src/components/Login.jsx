@@ -53,6 +53,7 @@ export default function Login() {
         >
           Log In
         </button>
+        <a href="/register" className="bg-inherit text-white">Not a user?</a>
       </div>
     </div>
   );
