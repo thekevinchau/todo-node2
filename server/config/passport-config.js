@@ -1,6 +1,7 @@
 const passport = require("passport");
 const User = require("../model/User");
 const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
 
 //We want to give the local strategy a method of verifying if a user is in our databse
 const verification = async(username, password, done) => {
@@ -13,12 +14,13 @@ const verification = async(username, password, done) => {
         }
 
         //If the password doesn't match, we want to also fail authentication (hence middle option of done being false)
-        if (user.password !== password){
-            return done(null, false, {message: "Password is incorrect!"});
+        if (!await bcrypt.compare(user.password, password)){
+            return done(null, user);
         }
         
         //If we are able to pass the first two checks, then we should be able to authenticate our user.
-        return done(null, user);
+        return done(null, false, {message: "Password is incorrect!"});
+        //return done(null, user);
 
     }catch(err){
         done(err);
