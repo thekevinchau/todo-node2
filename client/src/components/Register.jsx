@@ -5,12 +5,35 @@ import { useNavigate } from "react-router-dom";
 export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [messageStatus, setMessageStatus] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission
-    await createUser(username, password);
-    navigate('/');
+    try{
+      if (username.includes(' ')){
+        setMessageStatus('Username cannot contain spaces!');
+        setTimeout(() => {
+          setMessageStatus('')
+        },3000)
+        return;
+      }
+      if (password.includes(' ')){
+        setMessageStatus('Password cannot contain spaces!');
+        setTimeout(() => {
+          setMessageStatus('')
+        },3000)
+        return;
+      }
+      else{
+        await createUser(username, password);
+        navigate('/');
+        return;
+      }
+
+    }catch(err){
+      console.error('Error creating user!', err)
+    }
   };
 
   return (
@@ -35,6 +58,7 @@ export default function Register() {
             value={password}
             required
           />
+          { messageStatus !== '' ? <p className="bg-inherit text-white">{messageStatus}</p>: null} 
           <button
             type="submit"
             className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-200"
