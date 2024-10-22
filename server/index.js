@@ -10,13 +10,9 @@ const session = require('express-session');
 
 initializeDB();
 
-//ejs
-app.set('view engine', 'ejs');
-app.set('views', __dirname);
-
 //default config
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: process.env.FRONTEND_URL,
     credentials: true
 }))
 app.use(express.urlencoded({extended: false}));
