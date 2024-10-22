@@ -10,6 +10,7 @@ const session = require('express-session');
 
 initializeDB();
 
+console.log(process.env.FRONTEND_URL);
 //default config
 app.use(cors({
     origin: process.env.FRONTEND_URL,
