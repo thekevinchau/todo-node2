@@ -12,7 +12,7 @@ initializeDB();
 
 //default config
 app.use(cors({
-    origin: "https://todo-node2-qc8l.vercel.app",
+    origin: process.env.FRONTEND_URL,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 }))
