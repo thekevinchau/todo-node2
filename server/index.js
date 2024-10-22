@@ -13,7 +13,8 @@ initializeDB();
 //default config
 app.use(cors({
     origin: process.env.FRONTEND_URL,
-    credentials: true
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
 }))
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
