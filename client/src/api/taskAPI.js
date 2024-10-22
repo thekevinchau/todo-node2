@@ -2,7 +2,7 @@
 
 export const createUser = async (username, password) => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/register`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/register`, {
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -31,7 +31,7 @@ Simple post request to the backend that will generate a cookie on the request fo
 */
 export const loginUser = async (username, password) => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/login`,
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/login`,
       {
         method: "POST",
         headers: {
@@ -61,7 +61,7 @@ export const loginUser = async (username, password) => {
 */
 export const retrieveTasks = async () => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/tasks`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/tasks`, {
       method: "GET",
       credentials: 'include'
     });
@@ -74,7 +74,7 @@ export const retrieveTasks = async () => {
 
 export const logout = async () => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/logout`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/logout`, {
       method: "GET",
       credentials: 'include',
       headers: {
@@ -91,7 +91,7 @@ export const logout = async () => {
 
 export const deleteTask = async (taskId) => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/tasks/delete`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/tasks/delete`, {
       method: "DELETE",
       credentials: 'include',
       headers: {
@@ -112,7 +112,7 @@ export const deleteTask = async (taskId) => {
 
 export const addTask = async (taskName) => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/addTask`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/addTask`, {
       method: "POST",
       credentials: 'include',
       headers: {
@@ -132,7 +132,7 @@ export const addTask = async (taskName) => {
 
 export const toggleCompletion = async(taskId) => {
   try{
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/tasks/changeCompletion`,
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/tasks/changeCompletion`,
       {
         method: "PUT",
         credentials: 'include',
@@ -154,7 +154,7 @@ export const toggleCompletion = async(taskId) => {
 
 export const updateTaskName = async(taskId, taskName) => {
   try{
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/tasks/updateTaskName`,
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/tasks/updateTaskName`,
       {
         method: "PUT",
         credentials: 'include',
