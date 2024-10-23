@@ -11,11 +11,11 @@ export default function Login() {
 
   const login = async () => {
     const response = await loginUser(username, password);
-
-    if (response && response.status === "success") {
+    if (response.token) {
       setIsLoggedIn(true);
       setUser(response);
     }
+
   };
 
   useEffect(() => {

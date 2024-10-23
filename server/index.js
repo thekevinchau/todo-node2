@@ -22,18 +22,6 @@ app.use(express.json());
 
 //configuring passport. These basically allow passport to attach itself to a session cookie that is used  for future requests to verify that the user
 //is still logged in and doing what they need to do.
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: true,
-        sameSite: "none"
-    }
-}))
-app.use(passport.initialize());
-app.use(passport.session());
-require('./config/passport-config')
 
 app.use('/api', apiRouter)
 
