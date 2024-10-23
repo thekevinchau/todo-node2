@@ -48,6 +48,7 @@ export const loginUser = async (username, password) => {
     )
 
     const data = await response.json();
+    localStorage.setItem('token', data.token)
     return data;
 
   } catch (err) {
@@ -55,14 +56,13 @@ export const loginUser = async (username, password) => {
   }
 }
 
-
-/*
-
-*/
 export const retrieveTasks = async () => {
   try {
     const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/tasks`, {
       method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
       credentials: 'include'
     });
     const data = await response.json();
@@ -74,15 +74,7 @@ export const retrieveTasks = async () => {
 
 export const logout = async () => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/logout`, {
-      method: "GET",
-      credentials: 'include',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    });
-    return response.message;
+    localStorage.removeItem('token');
   } catch (err) {
     console.error('Error logging out!', err)
   }
@@ -96,14 +88,16 @@ export const deleteTask = async (taskId) => {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+
       },
       body: JSON.stringify({
         task_id: taskId
       })
     });
-    console.log(response.message);
     location.reload();
+    return response;
 
   } catch (err) {
     console.error('Error deleting task!', err);
@@ -117,50 +111,53 @@ export const addTask = async (taskName) => {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify({
         task_name: taskName
       })
     })
-    console.log(response.message);
     location.reload();
+    return response;
   } catch (err) {
     console.error('Error adding a task!', err);
   }
 }
 
-export const toggleCompletion = async(taskId) => {
-  try{
+export const toggleCompletion = async (taskId) => {
+  try {
     const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/tasks/changeCompletion`,
       {
         method: "PUT",
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify({
           task_id: taskId
         })
       }
     )
-    console.log(response.message);
     location.reload();
-  }catch(err){
+    return response;
+  } catch (err) {
     console.error('Error toggling task completion!', err)
   }
 }
 
-export const updateTaskName = async(taskId, taskName) => {
-  try{
+export const updateTaskName = async (taskId, taskName) => {
+  try {
     const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/tasks/updateTaskName`,
       {
         method: "PUT",
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify({
           task_id: taskId,
@@ -168,10 +165,10 @@ export const updateTaskName = async(taskId, taskName) => {
         })
       }
     );
-    console.log(response.message);
-
     location.reload();
-  }catch(err){
+    return response;
+
+  } catch (err) {
     console.error('Error updating task name', err)
   }
 }
