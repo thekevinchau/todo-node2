@@ -40,7 +40,7 @@ apiRouter.get('/logout', (req, res) => {
 //waits for post at login route, then passport will authenticate as middleware, then if successful, we move  onto the next middleware (3rd param)
 apiRouter.post('/login', login);
 apiRouter.post('/addTask', auth, addTask);
-apiRouter.post('/register', auth, createUser);
+apiRouter.post('/register', createUser);
 
 // ---------------- START OF PUT ROUTES ----------------------------------
 apiRouter.put('/tasks/updateTaskName', auth, updateTaskName);
