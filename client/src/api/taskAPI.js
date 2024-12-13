@@ -74,7 +74,7 @@ export const retrieveTasks = async () => {
 
 export const logout = async () => {
   try {
-    localStorage.removeItem('token');
+    console.log('Logged out!');
   } catch (err) {
     console.error('Error logging out!', err)
   }
